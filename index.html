@@ -1,0 +1,1487 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Arnan-Hen — Nonton Anime Sub Indo</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0a0a0f;
+    --surface: #12121a;
+    --surface2: #1a1a26;
+    --accent: #7c3aed;
+    --accent-light: #a78bfa;
+    --accent-glow: rgba(124,58,237,0.35);
+    --text: #f8fafc;
+    --muted: #94a3b8;
+    --border: rgba(255,255,255,0.07);
+    --card-hover: #1e1e2e;
+  }
+
+  * { margin:0; padding:0; box-sizing:border-box; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Inter', sans-serif;
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  /* ── SIDEBAR ── */
+  .sidebar {
+    position: fixed;
+    left: 0; top: 0;
+    width: 220px;
+    height: 100vh;
+    background: var(--surface);
+    border-right: 1px solid var(--border);
+    display: flex;
+    flex-direction: column;
+    z-index: 100;
+    transition: transform 0.3s;
+  }
+
+  .sidebar-logo {
+    padding: 24px 20px 20px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .logo-text {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 28px;
+    letter-spacing: 2px;
+    background: linear-gradient(135deg, var(--accent-light), var(--accent));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    line-height: 1;
+  }
+
+  .logo-sub {
+    font-size: 10px;
+    color: var(--muted);
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    margin-top: 3px;
+  }
+
+  .sidebar-nav {
+    padding: 16px 12px;
+    flex: 1;
+    overflow-y: auto;
+  }
+
+  .nav-section-label {
+    font-size: 10px;
+    color: var(--muted);
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    padding: 8px 8px 6px;
+    margin-top: 8px;
+  }
+
+  .nav-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 12px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--muted);
+    transition: all 0.2s;
+    margin-bottom: 2px;
+    border: none;
+    background: none;
+    width: 100%;
+    text-align: left;
+  }
+
+  .nav-item:hover {
+    color: var(--text);
+    background: var(--surface2);
+  }
+
+  .nav-item.active {
+    color: var(--accent-light);
+    background: rgba(124,58,237,0.15);
+    box-shadow: inset 3px 0 0 var(--accent);
+  }
+
+  .nav-item svg { width:16px; height:16px; flex-shrink:0; }
+
+  .sidebar-footer {
+    padding: 16px;
+    border-top: 1px solid var(--border);
+  }
+
+  .online-badge {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 11px;
+    color: var(--muted);
+  }
+
+  .online-dot {
+    width: 7px; height: 7px;
+    border-radius: 50%;
+    background: #22c55e;
+    box-shadow: 0 0 6px #22c55e;
+    animation: pulse-dot 2s infinite;
+  }
+
+  @keyframes pulse-dot {
+    0%,100% { opacity:1; }
+    50% { opacity:0.4; }
+  }
+
+  /* ── MAIN ── */
+  .main {
+    margin-left: 220px;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+  }
+
+  /* ── TOPBAR ── */
+  .topbar {
+    position: sticky;
+    top: 0;
+    background: rgba(10,10,15,0.85);
+    backdrop-filter: blur(16px);
+    border-bottom: 1px solid var(--border);
+    padding: 0 28px;
+    height: 60px;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    z-index: 90;
+  }
+
+  .search-wrap {
+    position: relative;
+    flex: 1;
+    max-width: 480px;
+  }
+
+  .search-input {
+    width: 100%;
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 9px 14px 9px 40px;
+    color: var(--text);
+    font-size: 14px;
+    font-family: 'Inter', sans-serif;
+    outline: none;
+    transition: border-color 0.2s, box-shadow 0.2s;
+  }
+
+  .search-input:focus {
+    border-color: var(--accent);
+    box-shadow: 0 0 0 3px var(--accent-glow);
+  }
+
+  .search-input::placeholder { color: var(--muted); }
+
+  .search-icon {
+    position: absolute;
+    left: 12px; top: 50%;
+    transform: translateY(-50%);
+    color: var(--muted);
+    pointer-events: none;
+  }
+
+  .search-btn {
+    background: var(--accent);
+    border: none;
+    color: white;
+    padding: 9px 18px;
+    border-radius: 9px;
+    cursor: pointer;
+    font-size: 13px;
+    font-weight: 600;
+    font-family: 'Inter', sans-serif;
+    transition: all 0.2s;
+    white-space: nowrap;
+  }
+
+  .search-btn:hover {
+    background: var(--accent-light);
+    box-shadow: 0 4px 16px var(--accent-glow);
+  }
+
+  .topbar-title {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 18px;
+    letter-spacing: 1.5px;
+    color: var(--muted);
+    flex: 1;
+    text-align: right;
+  }
+
+  /* ── CONTENT ── */
+  .content {
+    padding: 28px;
+    flex: 1;
+  }
+
+  .section-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 20px;
+  }
+
+  .section-title {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 22px;
+    letter-spacing: 2px;
+    color: var(--text);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .section-title::before {
+    content: '';
+    display: block;
+    width: 4px;
+    height: 22px;
+    background: var(--accent);
+    border-radius: 2px;
+    box-shadow: 0 0 10px var(--accent);
+  }
+
+  .see-all {
+    font-size: 12px;
+    color: var(--accent-light);
+    cursor: pointer;
+    text-decoration: none;
+    font-weight: 500;
+    letter-spacing: 0.5px;
+    background: none;
+    border: none;
+    font-family: 'Inter', sans-serif;
+  }
+
+  .see-all:hover { text-decoration: underline; }
+
+  /* ── ANIME GRID ── */
+  .anime-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(155px, 1fr));
+    gap: 16px;
+    margin-bottom: 40px;
+  }
+
+  .anime-card {
+    background: var(--surface);
+    border-radius: 10px;
+    overflow: hidden;
+    cursor: pointer;
+    transition: transform 0.2s, box-shadow 0.2s;
+    border: 1px solid var(--border);
+    position: relative;
+  }
+
+  .anime-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 12px 30px rgba(0,0,0,0.5), 0 0 0 1px var(--accent);
+  }
+
+  .card-img {
+    width: 100%;
+    aspect-ratio: 2/3;
+    object-fit: cover;
+    background: var(--surface2);
+    display: block;
+  }
+
+  .card-img-placeholder {
+    width: 100%;
+    aspect-ratio: 2/3;
+    background: linear-gradient(135deg, var(--surface2), #1e1a2e);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--accent-light);
+    font-size: 36px;
+  }
+
+  .card-badge {
+    position: absolute;
+    top: 8px; left: 8px;
+    background: var(--accent);
+    color: white;
+    font-size: 10px;
+    font-weight: 700;
+    padding: 2px 7px;
+    border-radius: 4px;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+  }
+
+  .card-score {
+    position: absolute;
+    top: 8px; right: 8px;
+    background: rgba(0,0,0,0.75);
+    color: #fbbf24;
+    font-size: 11px;
+    font-weight: 600;
+    padding: 2px 6px;
+    border-radius: 4px;
+    backdrop-filter: blur(4px);
+  }
+
+  .card-body {
+    padding: 10px 10px 12px;
+  }
+
+  .card-title {
+    font-size: 12.5px;
+    font-weight: 600;
+    line-height: 1.4;
+    color: var(--text);
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    margin-bottom: 5px;
+  }
+
+  .card-meta {
+    font-size: 11px;
+    color: var(--muted);
+  }
+
+  /* ── HERO BANNER ── */
+  .hero {
+    background: linear-gradient(135deg, #1a0a2e, #0f0a1e, #0a1020);
+    border-radius: 14px;
+    padding: 40px 40px;
+    margin-bottom: 36px;
+    position: relative;
+    overflow: hidden;
+    border: 1px solid rgba(124,58,237,0.2);
+  }
+
+  .hero::before {
+    content: '';
+    position: absolute;
+    top: -60px; right: -60px;
+    width: 280px; height: 280px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(124,58,237,0.25), transparent 70%);
+    pointer-events: none;
+  }
+
+  .hero-eyebrow {
+    font-size: 11px;
+    color: var(--accent-light);
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    font-weight: 600;
+    margin-bottom: 10px;
+  }
+
+  .hero-title {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 52px;
+    letter-spacing: 3px;
+    line-height: 1;
+    margin-bottom: 12px;
+    background: linear-gradient(90deg, #fff, var(--accent-light));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .hero-desc {
+    font-size: 14px;
+    color: var(--muted);
+    max-width: 480px;
+    line-height: 1.7;
+    margin-bottom: 24px;
+  }
+
+  .hero-cta {
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+  }
+
+  .btn-primary {
+    background: var(--accent);
+    color: white;
+    border: none;
+    padding: 11px 22px;
+    border-radius: 9px;
+    cursor: pointer;
+    font-size: 13px;
+    font-weight: 600;
+    font-family: 'Inter', sans-serif;
+    transition: all 0.2s;
+    display: flex;
+    align-items: center;
+    gap: 7px;
+  }
+
+  .btn-primary:hover {
+    background: var(--accent-light);
+    box-shadow: 0 6px 20px var(--accent-glow);
+    transform: translateY(-1px);
+  }
+
+  .btn-ghost {
+    background: rgba(255,255,255,0.06);
+    color: var(--text);
+    border: 1px solid var(--border);
+    padding: 11px 22px;
+    border-radius: 9px;
+    cursor: pointer;
+    font-size: 13px;
+    font-weight: 500;
+    font-family: 'Inter', sans-serif;
+    transition: all 0.2s;
+    display: flex;
+    align-items: center;
+    gap: 7px;
+  }
+
+  .btn-ghost:hover {
+    background: rgba(255,255,255,0.1);
+    border-color: var(--accent-light);
+  }
+
+  /* ── JADWAL TABLE ── */
+  .jadwal-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 14px;
+    margin-bottom: 32px;
+  }
+
+  .jadwal-day {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    overflow: hidden;
+  }
+
+  .jadwal-day-header {
+    background: rgba(124,58,237,0.18);
+    padding: 10px 14px;
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 16px;
+    letter-spacing: 2px;
+    color: var(--accent-light);
+    border-bottom: 1px solid var(--border);
+  }
+
+  .jadwal-day-header.today {
+    background: var(--accent);
+    color: white;
+  }
+
+  .jadwal-list {
+    padding: 10px 0;
+  }
+
+  .jadwal-item {
+    padding: 7px 14px;
+    font-size: 12.5px;
+    color: var(--muted);
+    cursor: pointer;
+    transition: all 0.15s;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    border-left: 2px solid transparent;
+  }
+
+  .jadwal-item:hover {
+    color: var(--text);
+    background: var(--surface2);
+    border-left-color: var(--accent);
+  }
+
+  .jadwal-item::before {
+    content: '';
+    width: 5px; height: 5px;
+    border-radius: 50%;
+    background: var(--accent-light);
+    flex-shrink: 0;
+    opacity: 0.5;
+  }
+
+  /* ── EPISODE LIST ── */
+  .episode-list {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin-bottom: 32px;
+  }
+
+  .ep-item {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 9px;
+    padding: 12px 16px;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+
+  .ep-item:hover {
+    background: var(--surface2);
+    border-color: var(--accent);
+    transform: translateX(3px);
+  }
+
+  .ep-num {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 20px;
+    color: var(--accent);
+    min-width: 38px;
+    letter-spacing: 1px;
+  }
+
+  .ep-info { flex: 1; }
+
+  .ep-title {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--text);
+    margin-bottom: 2px;
+  }
+
+  .ep-date {
+    font-size: 11px;
+    color: var(--muted);
+  }
+
+  .ep-play {
+    color: var(--accent-light);
+    opacity: 0;
+    transition: opacity 0.2s;
+  }
+
+  .ep-item:hover .ep-play { opacity: 1; }
+
+  /* ── DETAIL PAGE ── */
+  .detail-hero {
+    display: flex;
+    gap: 28px;
+    margin-bottom: 32px;
+    background: var(--surface);
+    border-radius: 12px;
+    padding: 24px;
+    border: 1px solid var(--border);
+    flex-wrap: wrap;
+  }
+
+  .detail-poster {
+    width: 160px;
+    flex-shrink: 0;
+    border-radius: 8px;
+    overflow: hidden;
+    background: var(--surface2);
+    aspect-ratio: 2/3;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--accent-light);
+    font-size: 40px;
+  }
+
+  .detail-poster img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .detail-info { flex: 1; min-width: 200px; }
+
+  .detail-title {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 32px;
+    letter-spacing: 2px;
+    margin-bottom: 8px;
+    line-height: 1.1;
+  }
+
+  .detail-score {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    background: rgba(251,191,36,0.1);
+    border: 1px solid rgba(251,191,36,0.3);
+    color: #fbbf24;
+    padding: 3px 10px;
+    border-radius: 6px;
+    font-size: 12px;
+    font-weight: 600;
+    margin-bottom: 14px;
+  }
+
+  .detail-meta-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px 16px;
+    margin-bottom: 16px;
+  }
+
+  .detail-meta-item label {
+    display: block;
+    font-size: 10px;
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-bottom: 2px;
+  }
+
+  .detail-meta-item span {
+    font-size: 13px;
+    color: var(--text);
+    font-weight: 500;
+  }
+
+  /* ── GENRE CHIPS ── */
+  .genre-chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-bottom: 32px;
+  }
+
+  .genre-chip {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    color: var(--muted);
+    padding: 6px 14px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+
+  .genre-chip:hover, .genre-chip.active {
+    background: rgba(124,58,237,0.18);
+    border-color: var(--accent);
+    color: var(--accent-light);
+  }
+
+  /* ── VIDEO PLAYER ── */
+  .player-wrap {
+    background: #000;
+    border-radius: 12px;
+    overflow: hidden;
+    margin-bottom: 20px;
+    aspect-ratio: 16/9;
+    position: relative;
+    border: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .player-placeholder {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 14px;
+    color: var(--muted);
+    text-align: center;
+  }
+
+  .player-placeholder svg {
+    width: 56px; height: 56px;
+    color: var(--accent);
+    opacity: 0.6;
+  }
+
+  .player-frame {
+    width: 100%; height: 100%;
+    border: none;
+  }
+
+  .server-tabs {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+    margin-bottom: 20px;
+  }
+
+  .server-tab {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    color: var(--muted);
+    padding: 7px 16px;
+    border-radius: 7px;
+    font-size: 12px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s;
+    font-family: 'Inter', sans-serif;
+  }
+
+  .server-tab:hover, .server-tab.active {
+    background: var(--accent);
+    border-color: var(--accent);
+    color: white;
+    box-shadow: 0 4px 12px var(--accent-glow);
+  }
+
+  /* ── LOADING ── */
+  .loading-state {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 80px 20px;
+    gap: 16px;
+    color: var(--muted);
+  }
+
+  .spinner {
+    width: 36px; height: 36px;
+    border: 3px solid var(--surface2);
+    border-top-color: var(--accent);
+    border-radius: 50%;
+    animation: spin 0.8s linear infinite;
+  }
+
+  @keyframes spin { to { transform: rotate(360deg); } }
+
+  .error-state {
+    text-align: center;
+    padding: 60px 20px;
+    color: var(--muted);
+  }
+
+  .error-state svg {
+    width: 48px; height: 48px;
+    color: #ef4444;
+    margin-bottom: 12px;
+    display: block;
+    margin-inline: auto;
+  }
+
+  /* ── PAGINATION ── */
+  .pagination {
+    display: flex;
+    gap: 8px;
+    justify-content: center;
+    margin-top: 28px;
+    flex-wrap: wrap;
+  }
+
+  .page-btn {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    color: var(--muted);
+    width: 38px; height: 38px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 13px;
+    font-weight: 600;
+    font-family: 'Inter', sans-serif;
+    transition: all 0.2s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .page-btn:hover, .page-btn.active {
+    background: var(--accent);
+    border-color: var(--accent);
+    color: white;
+  }
+
+  /* ── MOBILE HEADER ── */
+  .mobile-header {
+    display: none;
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    height: 52px;
+    background: var(--surface);
+    border-bottom: 1px solid var(--border);
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 16px;
+    z-index: 200;
+  }
+
+  .hamburger {
+    background: none;
+    border: none;
+    color: var(--text);
+    cursor: pointer;
+    padding: 4px;
+  }
+
+  .sidebar-overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.6);
+    z-index: 99;
+    backdrop-filter: blur(2px);
+  }
+
+  /* ── DOWNLOAD SECTION ── */
+  .download-section {
+    background: var(--surface);
+    border-radius: 10px;
+    padding: 18px 20px;
+    border: 1px solid var(--border);
+    margin-bottom: 20px;
+  }
+
+  .download-section h3 {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 16px;
+    letter-spacing: 1.5px;
+    margin-bottom: 14px;
+    color: var(--accent-light);
+  }
+
+  .download-quality {
+    margin-bottom: 12px;
+  }
+
+  .download-quality-label {
+    font-size: 11px;
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-bottom: 7px;
+    font-weight: 600;
+  }
+
+  .download-links {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+  }
+
+  .download-link {
+    background: rgba(124,58,237,0.12);
+    border: 1px solid rgba(124,58,237,0.3);
+    color: var(--accent-light);
+    padding: 5px 13px;
+    border-radius: 6px;
+    font-size: 12px;
+    font-weight: 600;
+    cursor: pointer;
+    text-decoration: none;
+    transition: all 0.2s;
+    display: inline-block;
+  }
+
+  .download-link:hover {
+    background: var(--accent);
+    color: white;
+    border-color: var(--accent);
+  }
+
+  /* ── RESPONSIVE ── */
+  @media (max-width: 768px) {
+    .sidebar {
+      transform: translateX(-100%);
+    }
+    .sidebar.open {
+      transform: translateX(0);
+    }
+    .sidebar-overlay.active {
+      display: block;
+    }
+    .mobile-header {
+      display: flex;
+    }
+    .main {
+      margin-left: 0;
+      padding-top: 52px;
+    }
+    .content {
+      padding: 18px 14px;
+    }
+    .hero {
+      padding: 24px 20px;
+    }
+    .hero-title {
+      font-size: 36px;
+    }
+    .detail-poster {
+      width: 120px;
+    }
+    .topbar {
+      display: none;
+    }
+    .anime-grid {
+      grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
+      gap: 12px;
+    }
+  }
+
+  /* ── GENRE BADGE ── */
+  .genre-list {
+    display: flex; gap: 6px; flex-wrap: wrap; margin-top: 10px;
+  }
+  .genre-tag {
+    background: rgba(124,58,237,0.15);
+    color: var(--accent-light);
+    font-size: 10px;
+    padding: 2px 8px;
+    border-radius: 4px;
+    border: 1px solid rgba(124,58,237,0.25);
+    font-weight: 500;
+  }
+
+  /* ── EMPTY STATE ── */
+  .empty-state {
+    text-align: center;
+    padding: 60px 20px;
+    color: var(--muted);
+    font-size: 14px;
+  }
+
+  .empty-state svg {
+    width: 56px; height: 56px;
+    margin: 0 auto 12px;
+    display: block;
+    opacity: 0.3;
+  }
+
+  .stat-bar {
+    display: flex;
+    gap: 20px;
+    flex-wrap: wrap;
+    margin-bottom: 28px;
+  }
+
+  .stat-item {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 14px 20px;
+    flex: 1;
+    min-width: 120px;
+  }
+
+  .stat-label {
+    font-size: 10px;
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    margin-bottom: 5px;
+  }
+
+  .stat-value {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 28px;
+    letter-spacing: 1px;
+    color: var(--accent-light);
+  }
+</style>
+</head>
+<body>
+
+<!-- Mobile Header -->
+<div class="mobile-header">
+  <button class="hamburger" onclick="toggleSidebar()">
+    <svg width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+      <path d="M3 12h18M3 6h18M3 18h18"/>
+    </svg>
+  </button>
+  <span style="font-family:'Bebas Neue',sans-serif;font-size:22px;letter-spacing:2px;background:linear-gradient(135deg,#a78bfa,#7c3aed);-webkit-background-clip:text;-webkit-text-fill-color:transparent;">ARNAN-HEN</span>
+  <div style="width:30px"></div>
+</div>
+
+<div class="sidebar-overlay" id="overlay" onclick="toggleSidebar()"></div>
+
+<!-- Sidebar -->
+<aside class="sidebar" id="sidebar">
+  <div class="sidebar-logo">
+    <div class="logo-text">Arnan-Hen</div>
+    <div class="logo-sub">Anime Streaming</div>
+  </div>
+  <nav class="sidebar-nav">
+    <div class="nav-section-label">Menu Utama</div>
+    <button class="nav-item active" onclick="navigate('home')">
+      <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+      Beranda
+    </button>
+    <button class="nav-item" onclick="navigate('terbaru')">
+      <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+      Terbaru
+    </button>
+    <button class="nav-item" onclick="navigate('ongoing')">
+      <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+      Ongoing
+    </button>
+    <button class="nav-item" onclick="navigate('complete')">
+      <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+      Completed
+    </button>
+    <button class="nav-item" onclick="navigate('jadwal')">
+      <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+      Jadwal Rilis
+    </button>
+    <div class="nav-section-label">Genre</div>
+    <button class="nav-item" onclick="navigate('genre','action')">
+      <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg>
+      Action
+    </button>
+    <button class="nav-item" onclick="navigate('genre','comedy')">
+      <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M8 13s1.5 2 4 2 4-2 4-2"/><line x1="9" y1="9" x2="9.01" y2="9"/><line x1="15" y1="9" x2="15.01" y2="9"/></svg>
+      Comedy
+    </button>
+    <button class="nav-item" onclick="navigate('genre','romance')">
+      <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+      Romance
+    </button>
+    <button class="nav-item" onclick="navigate('genre','fantasy')">
+      <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+      Fantasy
+    </button>
+    <button class="nav-item" onclick="navigate('genre','horror')">
+      <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+      Horror
+    </button>
+  </nav>
+  <div class="sidebar-footer">
+    <div class="online-badge">
+      <div class="online-dot"></div>
+      Server Online
+    </div>
+  </div>
+</aside>
+
+<!-- Main Content -->
+<div class="main">
+  <!-- Topbar -->
+  <div class="topbar">
+    <div class="search-wrap">
+      <svg class="search-icon" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      <input class="search-input" id="searchInput" type="text" placeholder="Cari anime..." onkeydown="if(event.key==='Enter')doSearch()">
+    </div>
+    <button class="search-btn" onclick="doSearch()">Cari</button>
+    <div class="topbar-title" id="topbarTitle">BERANDA</div>
+  </div>
+
+  <div class="content" id="mainContent">
+    <!-- content rendered here -->
+  </div>
+</div>
+
+<script>
+// ── STATE ──
+const BASE_URL = 'https://otakudesu.news';
+const EP_BASE  = 'https://nontonanimex.com';
+let currentPage = 'home';
+let currentDetail = null;
+let currentEpisode = null;
+
+// ── DAYS ──
+const DAYS_ID = ['Minggu','Senin','Selasa','Rabu','Kamis','Jumat','Sabtu'];
+const todayDay = DAYS_ID[new Date().getDay()];
+
+// ── SIDEBAR TOGGLE ──
+function toggleSidebar() {
+  document.getElementById('sidebar').classList.toggle('open');
+  document.getElementById('overlay').classList.toggle('active');
+}
+
+// ── NAVIGATION ──
+function navigate(page, param) {
+  document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+  const navMap = {home:0, terbaru:1, ongoing:2, complete:3, jadwal:4};
+  if (navMap[page] !== undefined) {
+    document.querySelectorAll('.nav-item')[navMap[page]].classList.add('active');
+  }
+  currentPage = page;
+  if (page === 'home') renderHome();
+  else if (page === 'terbaru') renderList('terbaru');
+  else if (page === 'ongoing') renderList('ongoing');
+  else if (page === 'complete') renderList('complete');
+  else if (page === 'jadwal') renderJadwal();
+  else if (page === 'genre') renderGenre(param);
+  else if (page === 'search') renderSearch(param);
+  if (document.getElementById('sidebar').classList.contains('open')) toggleSidebar();
+}
+
+// ── SEARCH ──
+function doSearch() {
+  const q = document.getElementById('searchInput').value.trim();
+  if (!q) return;
+  navigate('search', q);
+}
+
+// ── API CALL ──
+async function apiFetch(endpoint) {
+  const res = await fetch('/api/' + endpoint);
+  if (!res.ok) throw new Error('API error ' + res.status);
+  return res.json();
+}
+
+// ── MOCK DATA (since we can't run Node backend inline) ──
+// We'll call the Anthropic API to generate realistic mock data for demo
+async function getMockData(type, param) {
+  const prompts = {
+    home: 'Generate a JSON array of 12 anime objects for a streaming site. Each object: {title, img: null, eps: "Episode X", score: "8.5", link: "#", badge: "SUB"} Mix ongoing and completed anime titles like Demon Slayer, One Piece, Naruto, Jujutsu Kaisen, Attack on Titan, Bleach, Vinland Saga, Solo Leveling, Blue Lock, Chainsaw Man, Re:Zero, Tokyo Ghoul. Vary scores 6.5-9.8. Return ONLY valid JSON array, no markdown.',
+    terbaru: 'Generate a JSON array of 12 recent anime episode updates. Each: {title, img: null, eps: "Episode 15", score: "8.2", link: "#", badge: "NEW"} Use current popular anime. Return ONLY valid JSON array.',
+    ongoing: 'Generate JSON array of 10 ongoing anime. Each: {title, img:null, eps:"Episode X/12", score:"8.1", link:"#", badge:"ONGOING"} Return ONLY valid JSON array.',
+    complete: 'Generate JSON array of 10 completed anime. Each: {title, img:null, eps:"12 Episodes", score:"8.7", link:"#", badge:"DONE"} Return ONLY valid JSON array.',
+    jadwal: 'Generate a JSON object with anime release schedule. Keys are Indonesian days: Senin,Selasa,Rabu,Kamis,Jumat,Sabtu,Minggu. Each is an array of {title, link:"#"}. 3-5 anime per day. Return ONLY valid JSON object.',
+    genre: `Generate JSON array of 10 anime in ${param} genre. Each: {title,img:null,eps:"12 eps",score:"8.0",link:"#",badge:"${(param||'').toUpperCase()}"} Return ONLY valid JSON array.`,
+    search: `Generate JSON array of 6 anime search results for "${param}". Each: {title,img:null,eps:"24 eps",score:"8.3",link:"#",badge:"SUB"} Make titles related to the search query. Return ONLY valid JSON array.`,
+  };
+
+  const response = await fetch("https://api.anthropic.com/v1/messages", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({
+      model: "claude-sonnet-4-6",
+      max_tokens: 1000,
+      messages: [{ role: "user", content: prompts[type] || prompts.home }]
+    })
+  });
+  const data = await response.json();
+  const text = data.content.map(i => i.text || '').join('');
+  const clean = text.replace(/```json|```/g, '').trim();
+  return JSON.parse(clean);
+}
+
+async function getMockDetail(slug) {
+  const response = await fetch("https://api.anthropic.com/v1/messages", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({
+      model: "claude-sonnet-4-6",
+      max_tokens: 800,
+      messages: [{ role: "user", content: `Generate a JSON detail object for an anime with slug "${slug}". Format: {title, score:"8.7", synopsis, info:{Studio,Status,Type,Episodes,Duration,Season,Year,Genres}, episodes:[{title:"Episode 1 - ...", url:"#", releaseDate:"2024-01-01"}] (generate 5 episodes)}. Return ONLY valid JSON.` }]
+    })
+  });
+  const data = await response.json();
+  const text = data.content.map(i => i.text || '').join('');
+  return JSON.parse(text.replace(/```json|```/g, '').trim());
+}
+
+// ── RENDER HELPERS ──
+function renderCard(a) {
+  return `
+  <div class="anime-card" onclick="openDetail('${(a.title||'').replace(/'/g,"\\'")}','${a.link||'#'}')">
+    <div class="card-img-placeholder">🎬</div>
+    ${a.badge ? `<div class="card-badge">${a.badge}</div>` : ''}
+    ${a.score ? `<div class="card-score">★ ${a.score}</div>` : ''}
+    <div class="card-body">
+      <div class="card-title">${a.title||'?'}</div>
+      <div class="card-meta">${a.eps||''}</div>
+    </div>
+  </div>`;
+}
+
+function setLoading() {
+  document.getElementById('mainContent').innerHTML = `
+    <div class="loading-state">
+      <div class="spinner"></div>
+      <span>Memuat data...</span>
+    </div>`;
+}
+
+function setTopbarTitle(t) {
+  document.getElementById('topbarTitle').textContent = t.toUpperCase();
+}
+
+// ── PAGES ──
+async function renderHome() {
+  setLoading();
+  setTopbarTitle('Beranda');
+  try {
+    const [homeItems, recentItems] = await Promise.all([
+      getMockData('home'),
+      getMockData('terbaru')
+    ]);
+
+    document.getElementById('mainContent').innerHTML = `
+      <div class="hero">
+        <div class="hero-eyebrow">✦ Selamat datang di</div>
+        <div class="hero-title">ARNAN-HEN</div>
+        <p class="hero-desc">Nonton anime sub indo favorit kamu dengan kualitas terbaik. Update cepat, server stabil, gratis selamanya.</p>
+        <div class="hero-cta">
+          <button class="btn-primary" onclick="navigate('terbaru')">
+            <svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+            Tonton Sekarang
+          </button>
+          <button class="btn-ghost" onclick="navigate('ongoing')">
+            <svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+            Ongoing
+          </button>
+        </div>
+      </div>
+
+      <div class="stat-bar">
+        <div class="stat-item"><div class="stat-label">Total Anime</div><div class="stat-value">2.400+</div></div>
+        <div class="stat-item"><div class="stat-label">Update Hari Ini</div><div class="stat-value">12</div></div>
+        <div class="stat-item"><div class="stat-label">Genre</div><div class="stat-value">35+</div></div>
+        <div class="stat-item"><div class="stat-label">Sub Indo</div><div class="stat-value">100%</div></div>
+      </div>
+
+      <div class="section-header">
+        <div class="section-title">Episode Terbaru</div>
+        <button class="see-all" onclick="navigate('terbaru')">Lihat Semua →</button>
+      </div>
+      <div class="anime-grid">${recentItems.slice(0,6).map(renderCard).join('')}</div>
+
+      <div class="section-header">
+        <div class="section-title">Populer</div>
+        <button class="see-all" onclick="navigate('ongoing')">Lihat Semua →</button>
+      </div>
+      <div class="anime-grid">${homeItems.map(renderCard).join('')}</div>
+    `;
+  } catch(e) {
+    renderError(e);
+  }
+}
+
+async function renderList(type) {
+  setLoading();
+  const titles = {terbaru:'Episode Terbaru', ongoing:'Ongoing', complete:'Completed'};
+  setTopbarTitle(titles[type]||type);
+  try {
+    const items = await getMockData(type);
+    document.getElementById('mainContent').innerHTML = `
+      <div class="section-header">
+        <div class="section-title">${titles[type]}</div>
+        <span style="font-size:12px;color:var(--muted)">${items.length} anime</span>
+      </div>
+      <div class="anime-grid">${items.map(renderCard).join('')}</div>
+      <div class="pagination">
+        <button class="page-btn active">1</button>
+        <button class="page-btn">2</button>
+        <button class="page-btn">3</button>
+        <button class="page-btn">›</button>
+      </div>
+    `;
+  } catch(e) { renderError(e); }
+}
+
+async function renderJadwal() {
+  setLoading();
+  setTopbarTitle('Jadwal Rilis');
+  try {
+    const schedule = await getMockData('jadwal');
+    const dayOrder = ['Senin','Selasa','Rabu','Kamis','Jumat','Sabtu','Minggu'];
+
+    const daysHtml = dayOrder.map(day => {
+      const items = schedule[day] || [];
+      const isToday = day === todayDay;
+      return `
+      <div class="jadwal-day">
+        <div class="jadwal-day-header ${isToday?'today':''}">${day}${isToday?' • Hari Ini':''}</div>
+        <div class="jadwal-list">
+          ${items.length ? items.map(i=>`
+            <div class="jadwal-item" onclick="openDetail('${(i.title||'').replace(/'/g,"\\'")}','#')">
+              ${i.title}
+            </div>`).join('') : '<div style="padding:12px 14px;font-size:12px;color:var(--muted);opacity:0.5">Tidak ada jadwal</div>'}
+        </div>
+      </div>`;
+    }).join('');
+
+    document.getElementById('mainContent').innerHTML = `
+      <div class="section-header">
+        <div class="section-title">Jadwal Rilis</div>
+        <span style="font-size:12px;color:var(--accent-light)">Hari ini: ${todayDay}</span>
+      </div>
+      <div class="jadwal-grid">${daysHtml}</div>
+    `;
+  } catch(e) { renderError(e); }
+}
+
+async function renderGenre(slug) {
+  setLoading();
+  setTopbarTitle('Genre: ' + slug);
+  try {
+    const items = await getMockData('genre', slug);
+    const genres = ['action','comedy','romance','fantasy','horror','drama','slice-of-life','sci-fi','sports','mecha','isekai','thriller'];
+    document.getElementById('mainContent').innerHTML = `
+      <div class="section-header">
+        <div class="section-title">Genre: ${slug}</div>
+      </div>
+      <div class="genre-chips">
+        ${genres.map(g=>`<button class="genre-chip ${g===slug?'active':''}" onclick="navigate('genre','${g}')">${g}</button>`).join('')}
+      </div>
+      <div class="anime-grid">${items.map(renderCard).join('')}</div>
+      <div class="pagination">
+        <button class="page-btn active">1</button>
+        <button class="page-btn">2</button>
+        <button class="page-btn">›</button>
+      </div>
+    `;
+  } catch(e) { renderError(e); }
+}
+
+async function renderSearch(query) {
+  setLoading();
+  setTopbarTitle('Cari: ' + query);
+  try {
+    const items = await getMockData('search', query);
+    document.getElementById('mainContent').innerHTML = `
+      <div class="section-header">
+        <div class="section-title">Hasil: "${query}"</div>
+        <span style="font-size:12px;color:var(--muted)">${items.length} ditemukan</span>
+      </div>
+      ${items.length ? `<div class="anime-grid">${items.map(renderCard).join('')}</div>` : `
+        <div class="empty-state">
+          <svg fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+          Anime "${query}" tidak ditemukan.<br>Coba kata kunci lain.
+        </div>`}
+    `;
+  } catch(e) { renderError(e); }
+}
+
+async function openDetail(title, link) {
+  setLoading();
+  setTopbarTitle(title);
+  try {
+    const detail = await getMockDetail(title);
+    const epListHtml = (detail.episodes||[]).map((ep, i) => `
+      <div class="ep-item" onclick="openEpisode('${(detail.title||title).replace(/'/g,"\\'")}', ${i+1})">
+        <div class="ep-num">${String(i+1).padStart(2,'0')}</div>
+        <div class="ep-info">
+          <div class="ep-title">${ep.title||'Episode '+(i+1)}</div>
+          <div class="ep-date">${ep.releaseDate||''}</div>
+        </div>
+        <div class="ep-play">
+          <svg width="18" height="18" fill="currentColor" viewBox="0 0 24 24"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+        </div>
+      </div>`).join('');
+
+    const infoHtml = Object.entries(detail.info||{}).map(([k,v])=>`
+      <div class="detail-meta-item">
+        <label>${k}</label>
+        <span>${v}</span>
+      </div>`).join('');
+
+    document.getElementById('mainContent').innerHTML = `
+      <div class="detail-hero">
+        <div class="detail-poster">🎬</div>
+        <div class="detail-info">
+          <div class="detail-title">${detail.title||title}</div>
+          <div class="detail-score">★ ${detail.score||'?'}</div>
+          <div class="detail-meta-grid">${infoHtml}</div>
+          <p style="font-size:13px;color:var(--muted);line-height:1.7">${(detail.synopsis||'').substring(0,200)}${detail.synopsis&&detail.synopsis.length>200?'...':''}</p>
+          <div class="hero-cta" style="margin-top:16px">
+            <button class="btn-primary" onclick="openEpisode('${(detail.title||title).replace(/'/g,"\\'")}', 1)">
+              <svg width="14" height="14" fill="currentColor" viewBox="0 0 24 24"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+              Tonton Episode 1
+            </button>
+          </div>
+        </div>
+      </div>
+      <div class="section-header">
+        <div class="section-title">Daftar Episode</div>
+        <span style="font-size:12px;color:var(--muted)">${(detail.episodes||[]).length} episode</span>
+      </div>
+      <div class="episode-list">${epListHtml||'<div class="empty-state">Belum ada episode</div>'}</div>
+    `;
+  } catch(e) { renderError(e); }
+}
+
+async function openEpisode(animeTitle, epNum) {
+  setLoading();
+  setTopbarTitle(`${animeTitle} - Ep. ${epNum}`);
+
+  const servers = ['Desustream', 'Acefile', 'Mega', 'KFiles'];
+
+  document.getElementById('mainContent').innerHTML = `
+    <div style="margin-bottom:14px">
+      <button class="btn-ghost" onclick="openDetail('${animeTitle.replace(/'/g,"\\'")}','#')" style="font-size:12px;padding:7px 14px">
+        ← Kembali ke Detail
+      </button>
+    </div>
+    <div style="font-family:'Bebas Neue',sans-serif;font-size:20px;letter-spacing:1.5px;color:var(--muted);margin-bottom:14px">
+      ${animeTitle} — <span style="color:var(--accent-light)">EPISODE ${epNum}</span>
+    </div>
+
+    <div class="player-wrap">
+      <div class="player-placeholder">
+        <svg fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polygon points="10 8 16 12 10 16 10 8" fill="currentColor" stroke="none"/></svg>
+        <div>
+          <div style="font-size:15px;font-weight:600;margin-bottom:4px">Pilih server untuk streaming</div>
+          <div style="font-size:12px">Klik salah satu server di bawah</div>
+        </div>
+      </div>
+    </div>
+
+    <div style="font-size:11px;color:var(--muted);margin-bottom:8px;text-transform:uppercase;letter-spacing:1px;font-weight:600">Server Streaming</div>
+    <div class="server-tabs" id="serverTabs">
+      ${['360p','480p','720p'].map(q => servers.map(s =>
+        `<button class="server-tab" onclick="selectServer(this,'${s}','${q}')">${s} ${q}</button>`
+      ).join('')).join('')}
+    </div>
+
+    <div class="download-section">
+      <h3>⬇ Download Episode</h3>
+      ${['360p','480p','720p','1080p'].map(q => `
+        <div class="download-quality">
+          <div class="download-quality-label">${q}</div>
+          <div class="download-links">
+            ${servers.slice(0,3).map(s => `<a class="download-link" href="#" onclick="return false">${s}</a>`).join('')}
+          </div>
+        </div>
+      `).join('')}
+    </div>
+
+    <div style="display:flex;gap:10px;flex-wrap:wrap">
+      ${epNum > 1 ? `<button class="btn-ghost" onclick="openEpisode('${animeTitle.replace(/'/g,"\\'")}',${epNum-1})">← Ep. ${epNum-1}</button>` : ''}
+      <button class="btn-primary" onclick="openEpisode('${animeTitle.replace(/'/g,"\\'")}',${epNum+1})">Ep. ${epNum+1} →</button>
+    </div>
+  `;
+}
+
+function selectServer(btn, server, quality) {
+  document.querySelectorAll('.server-tab').forEach(t => t.classList.remove('active'));
+  btn.classList.add('active');
+  const playerWrap = document.querySelector('.player-wrap');
+  playerWrap.innerHTML = `
+    <div class="player-placeholder">
+      <div class="spinner"></div>
+      <div>Menghubungkan ke ${server} ${quality}...</div>
+    </div>`;
+  setTimeout(() => {
+    playerWrap.innerHTML = `
+      <div class="player-placeholder">
+        <svg fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24" width="56" height="56" style="color:var(--accent)"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+        <div>
+          <div style="font-size:14px;font-weight:600;margin-bottom:4px">Server: ${server} • ${quality}</div>
+          <div style="font-size:12px">Stream aktif — (demo mode, embed tersedia di production)</div>
+        </div>
+      </div>`;
+  }, 1200);
+}
+
+function renderError(e) {
+  document.getElementById('mainContent').innerHTML = `
+    <div class="error-state">
+      <svg fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+      <div style="font-size:15px;font-weight:600;margin-bottom:6px">Gagal memuat</div>
+      <div style="font-size:13px">${e.message}</div>
+      <button class="btn-ghost" style="margin-top:16px;display:inline-flex" onclick="navigate('home')">← Kembali ke Beranda</button>
+    </div>`;
+}
+
+// ── INIT ──
+renderHome();
+</script>
+</body>
+</html>
