@@ -523,35 +523,53 @@ Jika tidak ada teks, kembalikan: {"bubbles":[],"summary":"Panel tanpa teks"}`;
         document.getElementById('translationBox').classList.add('visible');
       }
 
-      // STEP 2: Edit gambar dengan GPT Image 2
-      log('STEP 2: Mengedit gambar dengan GPT Image 2...');
+      // STEP 2: Edit gambar dengan FLUX Kontext Pro
+      log('STEP 2: Mengedit gambar dengan FLUX Kontext Pro...');
 
       const bubblesDesc = parsed.bubbles.map(b =>
-        `Balon ${b.id} (${b.position || 'unknown'}): ganti "${b.original}" dengan "${b.translated}"`
+        `speech bubble ${b.id}: replace "${b.original}" with "${b.translated}"`
       ).join('\n');
 
       const editPrompt = parsed.bubbles.length > 0
-        ? `Edit gambar manga ini:
-- Hapus semua teks ${detectSourceLang(parsed.bubbles)} dari balon kata dan kotak teks
-- Isi ulang dengan teks bahasa ${lang} yang rapi menggunakan font yang sesuai manga
-- Pertahankan gaya seni, panel, dan gambar karakter PERSIS SAMA
-- Jangan ubah background, karakter, atau elemen visual apapun
-- Hanya ganti teks saja
+        ? `You are editing a manga panel. Do the following:
+- Find all speech bubbles and text boxes containing Japanese/Korean/Chinese text
+- Erase the original text from each bubble completely
+- Write the translated text in its place using clean legible font
+- Keep all artwork, characters, backgrounds, and panel borders exactly the same
+- Only change the text inside bubbles, nothing else
 
-Teks yang harus diganti:
+Translations to apply:
 ${bubblesDesc}`
-        : `Gambar manga ini tidak memiliki teks. Kembalikan gambar seperti aslinya tanpa perubahan.`;
+        : `Return this manga image unchanged. There is no text to translate.`;
 
-      // Gunakan puter.ai.txt2img dengan image input untuk GPT Image 2 editing
+      // Upload gambar ke Puter FS untuk dapat URL publik
+      log('Mengupload gambar ke Puter storage...');
+      const blob2 = await fetch(uploadedDataUrl).then(r => r.blob());
+      const fname = 'manga_tmp_' + Date.now() + '.png';
+      await puter.fs.write(fname, blob2, { overwrite: true });
+      
+      // Dapatkan signed URL
+      let imageUrl = '';
+      try {
+        const signedUrl = await puter.fs.sign(fname, { read: true });
+        imageUrl = typeof signedUrl === 'string' ? signedUrl : signedUrl.url || signedUrl;
+      } catch(e) {
+        // fallback: coba pakai dataUrl langsung
+        imageUrl = uploadedDataUrl;
+      }
+
+      // Panggil FLUX Kontext Pro
       const editResp = await puter.ai.txt2img(editPrompt, {
-        model: 'gpt-image-2',
-        quality: 'medium',
-        image: uploadedDataUrl   // pass gambar asli untuk diedit
+        model: 'black-forest-labs/flux.1-kontext-pro',
+        image_url: imageUrl
       });
 
-      log('Gambar berhasil diedit! Menampilkan hasil...');
+      // Cleanup
+      try { await puter.fs.delete(fname); } catch(e) {}
 
-      // Ambil src dari HTMLImageElement yang dikembalikan txt2img
+      log('Gambar selesai diproses! Menampilkan hasil...');
+
+      // Ambil src dari response
       let resultImgSrc = null;
       if (editResp instanceof HTMLElement && editResp.tagName === 'IMG') {
         resultImgSrc = editResp.src;
