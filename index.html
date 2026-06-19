@@ -542,38 +542,25 @@ Teks yang harus diganti:
 ${bubblesDesc}`
         : `Gambar manga ini tidak memiliki teks. Kembalikan gambar seperti aslinya tanpa perubahan.`;
 
-      // Konversi dataUrl ke blob untuk dikirim ke GPT Image 2
-      const base64Data = uploadedDataUrl.split(',')[1];
-      const mimeType = uploadedDataUrl.split(';')[0].split(':')[1];
-
-      // Gunakan puter.ai.chat dengan image input untuk GPT Image 2 editing
-      const editResp = await puter.ai.chat(editPrompt, uploadedDataUrl, {
-        model: 'gpt-image-2'
+      // Gunakan puter.ai.txt2img dengan image input untuk GPT Image 2 editing
+      const editResp = await puter.ai.txt2img(editPrompt, {
+        model: 'gpt-image-2',
+        quality: 'medium',
+        image: uploadedDataUrl   // pass gambar asli untuk diedit
       });
 
       log('Gambar berhasil diedit! Menampilkan hasil...');
 
-      // Ambil gambar dari response
+      // Ambil src dari HTMLImageElement yang dikembalikan txt2img
       let resultImgSrc = null;
-      if (editResp && editResp.message) {
-        const content = editResp.message.content;
-        if (Array.isArray(content)) {
-          for (const part of content) {
-            if (part.type === 'image_url') { resultImgSrc = part.image_url.url; break; }
-            if (part.type === 'image') { resultImgSrc = part.url || part.image_url?.url; break; }
-          }
-        }
-        if (!resultImgSrc && typeof content === 'string' && content.startsWith('data:')) {
-          resultImgSrc = content;
-        }
-      }
-      // fallback: cek langsung di editResp
-      if (!resultImgSrc && editResp) {
-        if (editResp.image) resultImgSrc = editResp.image.src || editResp.image;
-        if (editResp.url) resultImgSrc = editResp.url;
-        if (typeof editResp === 'string' && editResp.startsWith('data:')) resultImgSrc = editResp;
-        // Jika editResp adalah HTMLImageElement
-        if (editResp instanceof HTMLElement && editResp.tagName === 'IMG') resultImgSrc = editResp.src;
+      if (editResp instanceof HTMLElement && editResp.tagName === 'IMG') {
+        resultImgSrc = editResp.src;
+      } else if (typeof editResp === 'string') {
+        resultImgSrc = editResp;
+      } else if (editResp && editResp.src) {
+        resultImgSrc = editResp.src;
+      } else if (editResp && editResp.url) {
+        resultImgSrc = editResp.url;
       }
 
       if (resultImgSrc) {
